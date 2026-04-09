@@ -1,8 +1,7 @@
 from decimal import Decimal
-from tokenize import String
 from typing import Optional
 import uuid
-from sqlalchemy import ForeignKey, Numeric
+from sqlalchemy import ForeignKey, Numeric, String
 from sqlalchemy.orm import Mapped, mapped_column
 from app.database import Base, TimestampMixin
 

@@ -1,8 +1,8 @@
-import bcrypt
+import bcrypt, jwt
 from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
+from jwt.exceptions import InvalidTokenError
 
 from app.core.config import settings
 
@@ -30,7 +30,7 @@ def decode_access_token(token: str) -> dict | None:
     try:
         payload = jwt.decode(token, settings.secret_key, algorithm=settings.algorithm)
         return payload
-    except JWTError:
+    except InvalidTokenError:
         return None
 
 
