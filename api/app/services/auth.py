@@ -10,7 +10,7 @@ from app.schemas.user import UserCreate
 
 
 class AuthService:
-    def __init__(self, db: Session):
+    def __init__(self, db: Session) -> None:
         self.db = db
 
     def register(self, user_in: UserCreate):
@@ -33,7 +33,7 @@ class AuthService:
                 status_code=HTTP_401_UNAUTHORIZED,
                 detail="invalid credentials",
             )
-            
+
         token = create_access_token({"sub": str(user.id)})
         return {"access_token": token, "token_type": "bearer"}
 
