@@ -4,6 +4,7 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_404_NOT_FOUND
 
+from app.core.deps import DBSession
 from app.database import get_db
 from app.models.activity import Activity
 from app.models.category import Category
@@ -31,7 +32,6 @@ class ActivityService:
             user_id=user_id,
             **activity_in.model_dump(),
             earned_points=earned_points,
-            note=activity_in.note,
         )
         self.db.add(activity)
         self.db.commit()
@@ -47,7 +47,7 @@ class ActivityService:
         )
 
 
-def get_activity_service(db: Session = Depends(get_db)) -> ActivityService:
+def get_activity_service(db: DBSession) -> ActivityService:
     return ActivityService(db)
 
 

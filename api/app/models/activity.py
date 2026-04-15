@@ -1,10 +1,10 @@
 import datetime
-from decimal import Decimal
-from typing import Optional
 import uuid
+
+from typing import Optional
 from sqlalchemy import Date, DateTime, ForeignKey, Integer, Numeric, String, func
 from sqlalchemy.orm import Mapped, mapped_column
-from app.database import Base, TimestampMixin
+from app.database import Base
 
 
 class Activity(Base):

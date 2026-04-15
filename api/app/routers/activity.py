@@ -1,10 +1,7 @@
 from fastapi import APIRouter, Depends, status
-from sqlalchemy.orm import Session
 
 from app.core.auth import get_current_user
-from app.database import get_db
-
-from app.models.activity import Activity
+from app.core.deps import CurrentUser
 from app.schemas.activity import ActivityCreate, ActivityResponse
 from app.services.activity import ActivityServiceDep
 
@@ -24,6 +21,6 @@ def get_activities(
 def create_activity(
     activity_in: ActivityCreate,
     service: ActivityServiceDep,
-    current_user=Depends(get_current_user),
+    current_user: CurrentUser,
 ):
     return service.create(activity_in=activity_in, user_id=current_user.id)

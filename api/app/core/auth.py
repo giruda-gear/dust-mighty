@@ -2,9 +2,11 @@ import bcrypt, jwt
 from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from jwt import algorithms
 from jwt.exceptions import InvalidTokenError
 
 from app.core.config import settings
+from app.schemas.user import UserInfo
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -28,7 +30,9 @@ def create_access_token(data: dict) -> str:
 
 def decode_access_token(token: str) -> dict | None:
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithm=settings.algorithm)
+        payload = jwt.decode(
+            token, settings.secret_key, algorithms=[settings.algorithm]
+        )
         return payload
     except InvalidTokenError:
         return None
@@ -36,10 +40,11 @@ def decode_access_token(token: str) -> dict | None:
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
     payload = decode_access_token(token)
+
     if payload is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="invalid or expired token",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    return payload
+    return UserInfo(id=payload.get("sub"))

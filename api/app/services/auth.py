@@ -3,7 +3,13 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 
-from app.core.auth import create_access_token, hash_password, verify_password
+from app.core.auth import (
+    create_access_token,
+    get_current_user,
+    hash_password,
+    verify_password,
+)
+from app.core.deps import DBSession
 from app.database import get_db
 from app.models.user import User
 from app.schemas.user import UserCreate
@@ -38,7 +44,7 @@ class AuthService:
         return {"access_token": token, "token_type": "bearer"}
 
 
-def get_auth_service(db: Session = Depends(get_db)) -> AuthService:
+def get_auth_service(db: DBSession) -> AuthService:
     return AuthService(db)
 
 
