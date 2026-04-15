@@ -1,5 +1,5 @@
 ## 🎮 DUST-MIGHTY
-Users can log activities such as reading, exercising, and studying in "10-minute blocks" to earn points and visualize their progress in real-time.
+Users can log activities such as reading, exercising, and studying in "10-minute blocks" to earn points and visualize their progress.
 
 ### 🚀 run fastapi
 ```bash
